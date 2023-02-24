@@ -80,13 +80,11 @@ def parsing(url):
     bathrooms = int(fbathroom.text) + int(hbathroom.text)
     ET.SubElement(data, "Bathrooms").text = str(bathrooms)
 
-    subtype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property SubType')]")
-    td_ele = subtype_ele.find_element(By.XPATH, "..//..//td")
-    ET.SubElement(data, "Property SubType").text = td_ele.text
+    subtype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property SubType')]/..//..//td")
+    ET.SubElement(data, "PropertySubType").text = subtype_ele.text
 
-    proptype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property Type')]")
-    td_ele = proptype_ele.find_element(By.XPATH, "..//..//td")
-    ET.SubElement(data, "Property Type").text = td_ele.text
+    proptype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property Type')]/..//..//td")
+    ET.SubElement(data, "PropertyType").text = proptype_ele.text
 
     ET.SubElement(data, "Photos").text = str(image_count)
 
@@ -106,8 +104,10 @@ if __name__ == "__main__":
     print("\nDownloading and extracting site map data... \n")
     xml_file = downAndExtract("https://s3.amazonaws.com/kunversion-frontend-sitemaps/sellwithduran.com/sitemap-listings-1.xml.gz")
 
-    print("\n\nGetting URLs... \n")
+    print("\n\nGetting URLs...")
     urls = getUrls(xml_file)
+
+    print("\n\nProcessing...")
 
     if not os.path.exists("results"):
         os.mkdir("results")
@@ -116,6 +116,5 @@ if __name__ == "__main__":
 
     for url in urls:
         print("\n---------- ", url, " ----------")
-        print("Processing...")
         parsing(url)
         
