@@ -1,5 +1,7 @@
 # python-sellwithduran-scrapping
 
+Website: https://www.sellwithduran.com/
+
 - Download and extract a remote sitemap to local directory.
 
   example: https://s3.amazonaws.com/kunversion-frontend-sitemaps/sellwithduran.com/sitemap-listings-1.xml.gz
@@ -24,7 +26,6 @@
       <changefreq>daily</changefreq>
     </url>
   </urlset>
-  .```
 
 - Download all images listed in remote url to local directory
 
