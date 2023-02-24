@@ -81,10 +81,10 @@ def parsing(url):
     ET.SubElement(data, "Bathrooms").text = str(bathrooms)
 
     subtype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property SubType')]/..//..//td")
-    ET.SubElement(data, "Property_SubType").text = subtype_ele.text
+    ET.SubElement(data, "Property-SubType").text = subtype_ele.text
 
     proptype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property Type')]/..//..//td")
-    ET.SubElement(data, "Property_Type").text = proptype_ele.text
+    ET.SubElement(data, "Property-Type").text = proptype_ele.text
 
     ET.SubElement(data, "Photos").text = str(image_count)
 
