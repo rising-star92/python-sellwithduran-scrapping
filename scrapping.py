@@ -36,14 +36,28 @@ def parsing(url):
 
     driver.get(url)
 
+    mls_ele = driver.find_element(By.XPATH, "//strong[text()='MLS#']/following-sibling::span")
+    mls_str = mls_ele.text
+
+    if not os.path.exists(mls_str):
+        os.mkdir(mls_str)
+        
+    os.chdir(mls_str)
+
+    print("Downloading images... ")
+    imgResults = driver.find_elements(By.XPATH,"//img[contains(@class,'owl-lazy')]")
+    image_count = 0
+    for img in imgResults:
+        if (img.get_attribute('data-src') != None):
+            image_count += 1
+            wget.download("https://" + img.get_attribute('data-src').split("/https://")[1])
+
     print("Scrapping data... ")
 
     data = ET.Element('root')
 
     ET.SubElement(data, "URL").text = url
 
-    mls_ele = driver.find_element(By.XPATH, "//strong[text()='MLS#']/following-sibling::span")
-    mls_str = mls_ele.text
     ET.SubElement(data, "MLS").text = mls_str
 
     address_ele = driver.find_element(By.XPATH, "//div[text()='Address']/following-sibling::div")
@@ -66,19 +80,6 @@ def parsing(url):
     bathrooms = int(fbathroom.text) + int(hbathroom.text)
     ET.SubElement(data, "Bathrooms").text = str(bathrooms)
 
-    if not os.path.exists(mls_str):
-        os.mkdir(mls_str)
-        
-    os.chdir(mls_str)
-
-    print("Downloading images... ")
-    imgResults = driver.find_elements(By.XPATH,"//img[contains(@class,'owl-lazy')]")
-    image_count = 0
-    for img in imgResults:
-        if (img.get_attribute('data-src') != None):
-            image_count += 1
-            wget.download("https://" + img.get_attribute('data-src').split("/https://")[1])
-
     ET.SubElement(data, "Photos").text = str(image_count)
 
     mydata = ET.tostring(data)  
@@ -90,12 +91,23 @@ def parsing(url):
 
     driver.close()
 
+    print("Completed: Saved Data for ", mls_str)
+
 if __name__ == "__main__":
     # url = input()
+    print("\nDownloading and extracting site map data... \n")
     xml_file = downAndExtract("https://s3.amazonaws.com/kunversion-frontend-sitemaps/sellwithduran.com/sitemap-listings-1.xml.gz")
+
+    print("\n\nGetting URLs... \n")
     urls = getUrls(xml_file)
 
+    if not os.path.exists("results"):
+        os.mkdir("results")
+
+    os.chdir("results")
+
     for url in urls:
-        print("\nProcessing... ", url)
+        print("\n---------- ", url, " ----------")
+        print("Processing...")
         parsing(url)
         
