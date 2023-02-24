@@ -80,6 +80,14 @@ def parsing(url):
     bathrooms = int(fbathroom.text) + int(hbathroom.text)
     ET.SubElement(data, "Bathrooms").text = str(bathrooms)
 
+    subtype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property SubType')]")
+    td_ele = subtype_ele.find_element(By.XPATH, "..//..//td")
+    ET.SubElement(data, "Property SubType").text = td_ele.text
+
+    proptype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property Type')]")
+    td_ele = proptype_ele.find_element(By.XPATH, "..//..//td")
+    ET.SubElement(data, "Property Type").text = td_ele.text
+
     ET.SubElement(data, "Photos").text = str(image_count)
 
     mydata = ET.tostring(data)  
