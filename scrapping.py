@@ -31,7 +31,7 @@ def parsing(url):
     s=Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=s)
 
-    driver.maximize_window()
+    # driver.maximize_window()
     driver.implicitly_wait(30)
 
     driver.get(url)
