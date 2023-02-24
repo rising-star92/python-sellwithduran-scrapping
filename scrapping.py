@@ -75,9 +75,9 @@ def parsing(url):
     imgResults = driver.find_elements(By.XPATH,"//img[contains(@class,'owl-lazy')]")
     image_count = 0
     for img in imgResults:
-        if (img.get_attribute('src') != None):
+        if (img.get_attribute('data-src') != None):
             image_count += 1
-            wget.download(img.get_attribute('src'))
+            wget.download("https://" + img.get_attribute('data-src').split("/https://")[1])
 
     ET.SubElement(data, "Photos").text = str(image_count)
 
