@@ -6,7 +6,7 @@ import wget
 import gzip
 import os
 import xml.etree.ElementTree as ET
-
+from videogen import generateVideo
 
 def downAndExtract(_target):
     response = wget.download(_target, "temp.gz")
@@ -95,9 +95,9 @@ def parsing(url):
     path = os.getcwd()
     os.chdir(os.path.abspath(os.path.join(path, os.pardir)))
 
-    driver.close()
 
     print("Completed: Saved Data for ", mls_str)
+    return mls_str
 
 if __name__ == "__main__":
     # url = input()
@@ -116,5 +116,6 @@ if __name__ == "__main__":
 
     for url in urls:
         print("\n---------- ", url, " ----------")
-        parsing(url)
+        path = parsing(url)
+        generateVideo(path)
         
