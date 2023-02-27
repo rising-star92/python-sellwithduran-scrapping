@@ -87,6 +87,11 @@ def parsing(url):
     proptype_ele = driver.find_element(By.XPATH, "//b[contains(text(),'Property Type')]/..//..//td")
     ET.SubElement(data, "PropertyType").text = proptype_ele.text
 
+    crmls_ele = driver.find_element(By.ID, "crmls-listing-info")
+    crmls_ele_text = driver.execute_script("return arguments[0].textContent", crmls_ele)
+    
+    ET.SubElement(data, "Crmls-Listing-Info").text = crmls_ele_text
+
     ET.SubElement(data, "Photos").text = str(image_count)
 
     mydata = ET.tostring(data)  
