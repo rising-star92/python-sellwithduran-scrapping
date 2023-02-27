@@ -117,8 +117,11 @@ if __name__ == "__main__":
 
     os.chdir("results")
 
-    for url in urls:
+    for url in urls[0:2]:
         print("\n---------- ", url, " ----------")
         path = parsing(url)
         generateVideo(path)
+        
+        
+        
         
